@@ -703,7 +703,7 @@ public class ItemDictionary {
         list.put(Material.MANGROVE_BOAT, "Mangrove Boat");
         list.put(Material.MANGROVE_CHEST_BOAT, "Mangrove Boat with Chest");
         list.put(Material.TURTLE_HELMET, "Turtle Shell");
-        list.put(Material.SCUTE, "Scute");
+        list.put(Material.TURTLE_SCUTE, "Turtle Scute");
         list.put(Material.FLINT_AND_STEEL, "Flint and Steel");
         list.put(Material.APPLE, "Apple");
         list.put(Material.BOW, "Bow");
@@ -1160,5 +1160,7 @@ public class ItemDictionary {
         list.put(Material.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, "Smithing Template");
         list.put(Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE, "Smithing Template");
         list.put(Material.MUSIC_DISC_RELIC, "Music Disc");
+        list.put(Material.WOLF_ARMOR, "Wolf Armor");
+        list.put(Material.ARMADILLO_SCUTE, "Armadillo Scute");
     }
 }
