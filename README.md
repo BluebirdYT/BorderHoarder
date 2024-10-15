@@ -51,9 +51,7 @@ Collect unique items to expand the border!
 
 - The plugin runs on Bukkit, meaning any fork of Bukkit should
   work, including Spigot and Paper
-- The game is intended to be played on 1.20.4. It will probably 
-  not work below 1.20.3, and I can't guarantee it will work on 
-  future versions until I update it.
+- The game is intended to be played on 1.21.
 - The game can be played with any number of players, but it is
   recommended to play with 2-4 players. The more players there
   are, the easier the game will get.
