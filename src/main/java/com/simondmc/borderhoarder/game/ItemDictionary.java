@@ -1177,6 +1177,7 @@ public class ItemDictionary {
         list.put(Material.CHISELED_TUFF_BRICKS, "Chiseled Tuff Bricks");
         list.put(Material.CRAFTER, "Crafter");
         list.put(Material.GUSTER_BANNER_PATTERN, "Banner Pattern");
+        list.put(Material.FLOW_BANNER_PATTERN, "Banner Pattern");
         list.put(Material.TRIAL_KEY, "Trial Key");
         list.put(Material.OMINOUS_TRIAL_KEY, "Ominous Trial Key");
         list.put(Material.OMINOUS_BOTTLE, "Ominous Bottle");
