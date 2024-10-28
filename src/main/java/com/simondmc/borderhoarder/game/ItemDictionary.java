@@ -1165,11 +1165,11 @@ public class ItemDictionary {
         list.put(Material.COPPER_BULB, "Copper Bulb");
         list.put(Material.EXPOSED_COPPER_BULB, "Exposed Copper Bulb");
         list.put(Material.WEATHERED_COPPER_BULB, "Weathered Copper Bulb");
-        list.put(Material.OXIDIED_COPPER_BULB, "Oxidied Copper Bulb");
+        list.put(Material.OXIDIZED_COPPER_BULB, "Oxidized Copper Bulb");
         list.put(Material.WAXED_COPPER_BULB, "Waxed Copper Bulb");
         list.put(Material.WAXED_EXPOSED_COPPER_BULB, "Waxed Exposed Copper Bulb");
         list.put(Material.WAXED_WEATHERED_COPPER_BULB, "Waxed Weathered Copper Bulb");
-        list.put(Material.WAXED_OXIDIED_COPPER_BULB, "Waxed Oxidied Copper Bulb");
+        list.put(Material.WAXED_OXIDIZED_COPPER_BULB, "Waxed Oxidized Copper Bulb");
         list.put(Material.CHISELED_COPPER, "Chiseled Copper");
         list.put(Material.EXPOSED_CHISELED_COPPER, "Exposed Chiseled Copper");
         list.put(Material.WEATHERED_CHISELED_COPPER, "Weathered Chiseled Copper");
