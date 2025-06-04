@@ -92,67 +92,71 @@ public class PlayerListener implements Listener {
 
     // guarantee sapling and seed on first break
     @EventHandler
-    public void breakBlock(BlockBreakEvent e) {
-        if (!GameData.getBoolean("dropped-first-seed") &&
-                e.getBlock().getWorld().getName().equals(BorderWorldCreator.worldName) &&
-                e.getBlock().getType().equals(Material.SHORT_GRASS)) {
-            e.setDropItems(false);
-            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(Material.WHEAT_SEEDS));
-            GameData.set("dropped-first-seed", true);
+public void onEntityPortal(EntityPortalEvent event) {
+    Entity entity = event.getEntity();
+
+    // Handle Nether Portal
+    if (event.getCause() == TeleportCause.NETHER_PORTAL) {
+        event.setCanCreatePortal(true);
+        Location location;
+
+        if (entity.getWorld().getName().equals(BorderWorldCreator.worldName)) {
+            location = new Location(
+                Bukkit.getWorld(BorderWorldCreator.netherWorldName),
+                event.getFrom().getBlockX() / 8,
+                event.getFrom().getBlockY(),
+                event.getFrom().getBlockZ() / 8
+            );
+
+            if (!GameData.getBoolean("nether-initialized")) {
+                WorldBorder wb = Bukkit.getWorld(BorderWorldCreator.netherWorldName).getWorldBorder();
+                wb.setCenter(location.clone().add(0.5, 0, 0.5));
+                wb.setSize(ItemHandler.getCollectedItems().size() * 2 + 1);
+                GameData.set("nether-initialized", true);
+            }
+        } else if (entity.getWorld().getName().equals(BorderWorldCreator.netherWorldName)) {
+            location = new Location(
+                Bukkit.getWorld(BorderWorldCreator.worldName),
+                event.getFrom().getBlockX() * 8,
+                event.getFrom().getBlockY(),
+                event.getFrom().getBlockZ() * 8
+            );
+        } else {
+            return;
         }
-        if (!GameData.getBoolean("dropped-first-sapling") &&
-                e.getBlock().getWorld().getName().equals(BorderWorldCreator.worldName) &&
-                saplings.containsKey(e.getBlock().getType())) {
-            e.setDropItems(false);
-            e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(saplings.get(e.getBlock().getType())));
-            GameData.set("dropped-first-sapling", true);
-        }
+
+        event.setTo(location);
     }
 
-    // https://www.spigotmc.org/threads/create-world-with-nether-and-end.399952/
-    @EventHandler
-    public void onPortal(PlayerPortalEvent event) {
-        Player player = event.getPlayer();
+    // Handle End Portal
+    if (event.getCause() == TeleportCause.END_PORTAL) {
+        Location destination;
 
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
-            event.setCanCreatePortal(true);
-            Location location;
-            if (player.getWorld() == Bukkit.getWorld(BorderWorldCreator.worldName)) {
-                location = new Location(Bukkit.getWorld(BorderWorldCreator.netherWorldName), event.getFrom().getBlockX() / 8, event.getFrom().getBlockY(), event.getFrom().getBlockZ() / 8);
-                if (!GameData.getBoolean("nether-initialized")) {
-                    WorldBorder wb = Bukkit.getWorld(BorderWorldCreator.netherWorldName).getWorldBorder();
-                    wb.setCenter(location.clone().add(0.5, 0, 0.5));
-                    wb.setSize(ItemHandler.getCollectedItems().size() * 2 + 1);
-                    GameData.set("nether-initialized", true);
-                }
-            } else {
-                location = new Location(Bukkit.getWorld(BorderWorldCreator.worldName), event.getFrom().getBlockX() * 8, event.getFrom().getBlockY(), event.getFrom().getBlockZ() * 8);
-            }
-            event.setTo(location);
-        }
+        if (entity.getWorld().getName().equals(BorderWorldCreator.worldName)) {
+            destination = new Location(Bukkit.getWorld(BorderWorldCreator.endWorldName), 100, 50, 0);
+            event.setTo(destination);
 
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
-            if (player.getWorld() == Bukkit.getWorld(BorderWorldCreator.worldName)) {
-                Location loc = new Location(Bukkit.getWorld(BorderWorldCreator.endWorldName), 100, 50, 0); // This is the vanilla location for obsidian platform.
-                event.setTo(loc);
-                Block block = loc.getBlock();
-                for (int x = block.getX() - 2; x <= block.getX() + 2; x++) {
-                    for (int z = block.getZ() - 2; z <= block.getZ() + 2; z++) {
-                        Block platformBlock = loc.getWorld().getBlockAt(x, block.getY() - 1, z);
-                        if (platformBlock.getType() != Material.OBSIDIAN) {
-                            platformBlock.setType(Material.OBSIDIAN);
-                        }
-                        for (int yMod = 1; yMod <= 3; yMod++) {
-                            Block b = platformBlock.getRelative(BlockFace.UP, yMod);
-                            if (b.getType() != Material.AIR) {
-                                b.setType(Material.AIR);
-                            }
+            // Generate obsidian platform at destination
+            Block centerBlock = destination.getBlock();
+            for (int x = centerBlock.getX() - 2; x <= centerBlock.getX() + 2; x++) {
+                for (int z = centerBlock.getZ() - 2; z <= centerBlock.getZ() + 2; z++) {
+                    Block platformBlock = destination.getWorld().getBlockAt(x, centerBlock.getY() - 1, z);
+                    if (platformBlock.getType() != Material.OBSIDIAN) {
+                        platformBlock.setType(Material.OBSIDIAN);
+                    }
+
+                    for (int y = 1; y <= 3; y++) {
+                        Block airBlock = platformBlock.getRelative(BlockFace.UP, y);
+                        if (airBlock.getType() != Material.AIR) {
+                            airBlock.setType(Material.AIR);
                         }
                     }
                 }
-            } else if (player.getWorld() == Bukkit.getWorld(BorderWorldCreator.endWorldName)) {
-                event.setTo(Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation());
             }
+        } else if (entity.getWorld().getName().equals(BorderWorldCreator.endWorldName)) {
+            destination = Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation();
+            event.setTo(destination);
         }
     }
+}
 }
