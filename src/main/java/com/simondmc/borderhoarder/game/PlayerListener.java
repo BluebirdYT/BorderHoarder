@@ -18,6 +18,9 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.Entity;
+import org.bukkit.event.entity.EntityPortalEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import java.util.HashMap;
 import java.util.Map;
