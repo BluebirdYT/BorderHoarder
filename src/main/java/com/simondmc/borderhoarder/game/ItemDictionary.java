@@ -1160,8 +1160,10 @@ public class ItemDictionary {
         list.put(Material.EYE_ARMOR_TRIM_SMITHING_TEMPLATE, "Eye Armor Trim");
         list.put(Material.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE, "Spire Armor Trim");
         list.put(Material.MUSIC_DISC_RELIC, "Music Disc");
+        // 1.20.5 Items
         list.put(Material.WOLF_ARMOR, "Wolf Armor");
         list.put(Material.ARMADILLO_SCUTE, "Armadillo Scute");
+        // 1.21 Items
         list.put(Material.COPPER_BULB, "Copper Bulb");
         list.put(Material.EXPOSED_COPPER_BULB, "Exposed Copper Bulb");
         list.put(Material.WEATHERED_COPPER_BULB, "Weathered Copper Bulb");
@@ -1233,6 +1235,7 @@ public class ItemDictionary {
         list.put(Material.MUSIC_DISC_PRECIPICE, "Music Disc");
         list.put(Material.MUSIC_DISC_CREATOR, "Music Disc");
         list.put(Material.MUSIC_DISC_CREATOR_MUSIC_BOX, "Music Disc");
+        // 1.21.2 Items
         list.put(Material.BUNDLE, "Bundle");
         list.put(Material.WHITE_BUNDLE, "White Bundle");
         list.put(Material.ORANGE_BUNDLE, "Orange Bundle");
@@ -1252,5 +1255,69 @@ public class ItemDictionary {
         list.put(Material.BLACK_BUNDLE, "Black Bundle");
         list.put(Material.BORDURE_INDENTED_BANNER_PATTERN, "Bordure Indented Banner Pattern");
         list.put(Material.FIELD_MASONED_BANNER_PATTERN, "Field Masoned Banner Pattern");
+        // 1.21.4 Items
+        list.put(Material.CREAKING_HEART, "Creaking Heart");
+        list.put(Material.PALE_OAK_LOG, "Pale Oak Log");
+        list.put(Material.STRIPPED_PALE_OAK_LOG, "Stripped Pale Oak Log");
+        list.put(Material.PALE_OAK_WOOD, "Pale Oak Wood");
+        list.put(Material.STRIPPED_PALE_OAK_WOOD, "Stripped Pale Oak Wood");
+        list.put(Material.PALE_OAK_PLANKS, "Pale oak Planks");
+        list.put(Material.PALE_OAK_STAIRS, "Pale Oak Stairs");
+        list.put(Material.PALE_OAK_SLAB, "Pale Oak Slab");
+        list.put(Material.PALE_OAK_SIGN, "Pale Oak Sign");
+        list.put(Material.PALE_OAK_HANGING_SIGN, "Pale Oak Hanging Sign");
+        list.put(Material.PALE_OAK_BUTTON, "Pale Oak Button");
+        list.put(Material.PALE_OAK_PRESSURE_PLATE, "Pale Oak Pressure Plate");
+        list.put(Material.PALE_OAK_DOOR, "Pale Oak Door");
+        list.put(Material.PALE_OAK_FENCE, "Pale Oak Fence");
+        list.put(Material.PALE_OAK_FENCE_GATE, "Pale Oak Fence Gate");
+        list.put(Material.PALE_OAK_TRAPDOOR, "Pale Oak Trapdoor");
+        list.put(Material.PALE_OAK_BOAT, "Pale Oak Boat");
+        list.put(Material.PALE_OAK_CHEST_BOAT, "Pale Oak Chest Boat");
+        list.put(Material.PALE_HANGING_MOSS, "Pale Hanging Moss");
+        list.put(Material.PALE_MOSS_BLOCK, "Pale Moss Block");
+        list.put(Material.PALE_MOSS_CARPET, "Pale Moss Carpet");
+        list.put(Material.PALE_OAK_LEAVES, "Pale Oak Leaves");
+        list.put(Material.PALE_OAK_SAPLING, "Pale Oak Sapling");
+        list.put(Material.CLOSED_EYEBLOSSOM, "Closed Eyeblossom");
+        list.put(Material.OPEN_EYEBLOSSOM, "Open Eyeblossom");
+        list.put(Material.RESIN_BLOCK, "Block of Resin");
+        list.put(Material.RESIN_BRICKS, "Resin Bricks");
+        list.put(Material.CHISELED_RESIN_BRICKS, "Chiseled Resin Bricks");
+        list.put(Material.RESIN_BRICK_SLAB, "Resin Block Slab");
+        list.put(Material.RESIN_BRICK_STAIRS, "Resin Brick Stairs");
+        list.put(Material.RESIN_BRICK_WALL, "Resin Brick Wall");
+        list.put(Material.RESIN_CLUMP, "Resin Clump");
+        list.put(Material.RESIN_BRICK, "Resin Brick");
+        // 1.21.5 Items
+        list.put(Material.LEAF_LITTER, "Leaf Litter");
+        list.put(Material.WILDFLOWERS, "Wildflowers");
+        list.put(Material.BUSH, "Bush");
+        list.put(Material.FIREFLY_BUSH, "Firefly Bush");
+        list.put(Material.CACTUS_FLOWER, "Cactus Flower");
+        list.put(Material.SHORT_DRY_GRASS, "Short Dry Grass");
+        list.put(Material.TALL_DRY_GRASS, "Tall Dry Grass");
+        list.put(Material.BROWN_EGG, "Brown Egg");
+        list.put(Material.BLUE_EGG, "Blue Egg");
+        /* 1.21.6 Items
+        list.put(Material.DRIED_GHAST, "Dried Ghast");
+        list.put(Material.WHITE_HARNESS, "White Harness");
+        list.put(Material.ORANGE_HARNESS, "Orange Harness");
+        list.put(Material.MAGENTA_HARNESS, "Magenta Harness");
+        list.put(Material.LIGHT_BLUE_HARNESS, "Light Blue Harness");
+        list.put(Material.YELLOW_HARNESS, "Yellow Harness");
+        list.put(Material.LIME_HARNESS, "Lime Harness");
+        list.put(Material.PINK_HARNESS, "Pink Harness");
+        list.put(Material.GRAY_HARNESS, "Gray Harness");
+        list.put(Material.LIGHT_GRAY_HARNESS, "Light Gray Harness");
+        list.put(Material.CYAN_HARNESS, "Cyan Harness");
+        list.put(Material.PURPLE_HARNESS, "Purple Harness");
+        list.put(Material.BLUE_HARNESS, "Blue Harness");
+        list.put(Material.BROWN_HARNESS, "Brown Harness");
+        list.put(Material.GREEN_HARNESS, "Green Harness");
+        list.put(Material.RED_HARNESS, "Red Harness");
+        list.put(Material.BLACK_HARNESS, "Black Harness");
+        list.put(Material.MUSIC_DISC_TEARS, "Music Disc");
+        */
     }
 }
