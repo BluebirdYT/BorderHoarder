@@ -1281,17 +1281,17 @@ public class ItemDictionary {
         list.put(Material.PALE_OAK_SAPLING, "Pale Oak Sapling");
         list.put(Material.CLOSED_EYEBLOSSOM, "Closed Eyeblossom");
         list.put(Material.OPEN_EYEBLOSSOM, "Open Eyeblossom");
-        list.put(Material.BLOCK_OF_RESIN, "Block of Resin");
+        list.put(Material.RESIN_BLOCK, "Block of Resin");
         list.put(Material.RESIN_BRICKS, "Resin Bricks");
         list.put(Material.CHISELED_RESIN_BRICKS, "Chiseled Resin Bricks");
-        list.put(Material.RESIN_BLOCK_SLAB, "Resin Block Slab");
+        list.put(Material.RESIN_BRICK_SLAB, "Resin Block Slab");
         list.put(Material.RESIN_BRICK_STAIRS, "Resin Brick Stairs");
         list.put(Material.RESIN_BRICK_WALL, "Resin Brick Wall");
         list.put(Material.RESIN_CLUMP, "Resin Clump");
         list.put(Material.RESIN_BRICK, "Resin Brick");
         // 1.21.5 Items
         list.put(Material.LEAF_LITTER, "Leaf Litter");
-        list.put(Material.WILD_FLOWERS, "Wildflowers");
+        list.put(Material.WILDFLOWERS, "Wildflowers");
         list.put(Material.BUSH, "Bush");
         list.put(Material.FIREFLY_BUSH, "Firefly Bush");
         list.put(Material.CACTUS_FLOWER, "Cactus Flower");
