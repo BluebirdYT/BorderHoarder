@@ -33,7 +33,7 @@ Collect unique items to expand the border!
   with the overworld), but the end doesn't have a border, just
   so that obtaining an elytra and outer end island items is
   possible
-- As of 1.21.2(3), there are 1,239 total obtainable items in
+- As of 1.21.5, there are 1,281 total obtainable items in
   survival, and collecting any other item (such as bedrock
   or command blocks) will not count towards the progression and
   will not expand the border.
