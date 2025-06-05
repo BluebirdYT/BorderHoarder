@@ -2,10 +2,7 @@ package com.simondmc.borderhoarder.game;
 
 import com.simondmc.borderhoarder.inventory.InventoryBuilder;
 import com.simondmc.borderhoarder.world.BorderWorldCreator;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.WorldBorder;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
@@ -18,9 +15,7 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityPortalEvent;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,19 +63,15 @@ public class PlayerListener implements Listener {
     // force respawn position if bed is destroyed
     @EventHandler
     public void respawn(PlayerRespawnEvent e) {
-        // bed broken
-        if ((e.getPlayer().getWorld().getName().equals(BorderWorldCreator.worldName)
-                || e.getPlayer().getWorld().getName().equals(BorderWorldCreator.netherWorldName)
-                || e.getPlayer().getWorld().getName().equals(BorderWorldCreator.endWorldName))
-                && e.getPlayer().getBedSpawnLocation() == null) {
-            e.setRespawnLocation(Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation());
-        }
-        // spawn obstructed
-        if ((e.getPlayer().getWorld().getName().equals(BorderWorldCreator.worldName)
-                || e.getPlayer().getWorld().getName().equals(BorderWorldCreator.netherWorldName)
-                || e.getPlayer().getWorld().getName().equals(BorderWorldCreator.endWorldName))
-                && e.getPlayer().getWorld().getBlockAt(e.getPlayer().getWorld().getSpawnLocation()).getType() != Material.AIR) {
-            e.setRespawnLocation(Bukkit.getWorld(BorderWorldCreator.worldName).getHighestBlockAt(Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation()).getLocation().add(0.5, 1, 0.5));
+        Player player = e.getPlayer();
+        World deathLoc = player.getWorld();
+        if (deathLoc == Bukkit.getWorld(BorderWorldCreator.worldName) || deathLoc == Bukkit.getWorld(BorderWorldCreator.netherWorldName) || deathLoc == Bukkit.getWorld(BorderWorldCreator.endWorldName)) {
+            if (player.getRespawnLocation() == null) {
+                e.setRespawnLocation(Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation().add(0.5, 0, 0.5));
+                if (e.getPlayer().getWorld().getBlockAt(e.getPlayer().getWorld().getSpawnLocation().add(0, 1, 0)).getType() != Material.AIR) {
+                    e.setRespawnLocation(Bukkit.getWorld(BorderWorldCreator.worldName).getHighestBlockAt(Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation()).getLocation().add(0.5, 1, 0.5));
+                }
+            }
         }
     }
 
@@ -91,6 +82,9 @@ public class PlayerListener implements Listener {
         put(Material.JUNGLE_LEAVES, Material.JUNGLE_SAPLING);
         put(Material.ACACIA_LEAVES, Material.ACACIA_SAPLING);
         put(Material.DARK_OAK_LEAVES, Material.DARK_OAK_SAPLING);
+        put(Material.MANGROVE_LEAVES, Material.MANGROVE_PROPAGULE);
+        put(Material.CHERRY_LEAVES, Material.CHERRY_SAPLING);
+        put(Material.PALE_OAK_LEAVES, Material.PALE_OAK_SAPLING);
     }};
 
     // guarantee sapling and seed on first break
@@ -113,63 +107,81 @@ public class PlayerListener implements Listener {
     }
 
     @EventHandler
-public void onEntityPortal(EntityPortalEvent event) {
-    Entity entity = event.getEntity();
-    Location from = event.getFrom();
-    String fromWorld = from.getWorld().getName();
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        Player player = event.getPlayer();
+        Location from = event.getFrom();
+        Location to = event.getTo();
 
-    // Infer Nether portal use
-    if (fromWorld.equals(BorderWorldCreator.worldName)) {
-        // Going to Nether
-        Location to = new Location(
-            Bukkit.getWorld(BorderWorldCreator.netherWorldName),
-            from.getBlockX() / 8.0,
-            from.getBlockY(),
-            from.getBlockZ() / 8.0
-        );
-        event.setTo(to);
-
-        if (!GameData.getBoolean("nether-initialized")) {
-            WorldBorder wb = Bukkit.getWorld(BorderWorldCreator.netherWorldName).getWorldBorder();
-            wb.setCenter(to.clone().add(0.5, 0, 0.5));
-            wb.setSize(ItemHandler.getCollectedItems().size() * 2 + 1);
-            GameData.set("nether-initialized", true);
+        if (from.getWorld() == Bukkit.getWorld(BorderWorldCreator.worldName) || from.getWorld() == Bukkit.getWorld(BorderWorldCreator.netherWorldName) || from.getWorld() == Bukkit.getWorld(BorderWorldCreator.endWorldName)) {
+            if (event.getCause() == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+                event.setCanCreatePortal(true);
+                if (player.getWorld() == Bukkit.getWorld(BorderWorldCreator.worldName)) {
+                    to.setWorld(Bukkit.getWorld(BorderWorldCreator.netherWorldName));
+                    checkForFirstNetherEnter(to);
+                } else {
+                    to.setWorld(Bukkit.getWorld(BorderWorldCreator.worldName));
+                }
+            } else if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL) {
+                if (player.getWorld() == Bukkit.getWorld(BorderWorldCreator.worldName)) {
+                    generateEndPlatform();
+                    to = new Location(Bukkit.getWorld(BorderWorldCreator.endWorldName), 100.5, 49, 0.5, 90, to.getPitch());
+                }
+            }
         }
-
-    } else if (fromWorld.equals(BorderWorldCreator.netherWorldName)) {
-        // Going to Overworld from Nether
-        Location to = new Location(
-            Bukkit.getWorld(BorderWorldCreator.worldName),
-            from.getBlockX() * 8.0,
-            from.getBlockY(),
-            from.getBlockZ() * 8.0
-        );
         event.setTo(to);
+    }
 
-    } else if (fromWorld.equals(BorderWorldCreator.worldName)) {
-        // Possibly entering the End
-        Location to = new Location(Bukkit.getWorld(BorderWorldCreator.endWorldName), 100, 50, 0);
+    @EventHandler
+    public void onEntityPortal(EntityPortalEvent event) {
+        Location from = event.getFrom();
+        Location to = event.getTo();
+        if (from.getWorld() == Bukkit.getWorld(BorderWorldCreator.worldName) || from.getWorld() == Bukkit.getWorld(BorderWorldCreator.netherWorldName) || from.getWorld() == Bukkit.getWorld(BorderWorldCreator.endWorldName)) {
+            if (to.getWorld() == Bukkit.getWorld("world_nether")) {
+                event.setCanCreatePortal(true);
+                to.setWorld(Bukkit.getWorld(BorderWorldCreator.netherWorldName)); // overwrite the world to be the game one
+                checkForFirstNetherEnter(to);
+            } else if (to.getWorld() == Bukkit.getWorld("world_the_end")) {
+                to = new Location(Bukkit.getWorld(BorderWorldCreator.endWorldName), 100.5, 49, 0.5, to.getYaw(), to.getPitch());
+                generateEndPlatform();
+            } else if (to.getWorld() == Bukkit.getWorld("world")) {
+                if (from.getWorld() == Bukkit.getWorld(BorderWorldCreator.netherWorldName)) {
+                    event.setCanCreatePortal(true);
+                    to.setWorld(Bukkit.getWorld(BorderWorldCreator.worldName));
+                } else if (from.getWorld() == Bukkit.getWorld(BorderWorldCreator.endWorldName)) {
+                    to = Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation();
+                }
+            } else return;
+        }
         event.setTo(to);
+    }
 
-        Block centerBlock = to.getBlock();
-        for (int x = centerBlock.getX() - 2; x <= centerBlock.getX() + 2; x++) {
-            for (int z = centerBlock.getZ() - 2; z <= centerBlock.getZ() + 2; z++) {
-                Block platformBlock = to.getWorld().getBlockAt(x, centerBlock.getY() - 1, z);
+    private void generateEndPlatform() {
+        Location loc = new Location(Bukkit.getWorld(BorderWorldCreator.endWorldName), 100, 49, 0);
+        Block block = loc.getBlock();
+        for (int x = block.getX() - 2; x <= block.getX() + 2; x++) {
+            for (int z = block.getZ() - 2; z <= block.getZ() + 2; z++) {
+                Block platformBlock = loc.getWorld().getBlockAt(x, block.getY() - 1, z);
                 if (platformBlock.getType() != Material.OBSIDIAN) {
+                    platformBlock.breakNaturally();
                     platformBlock.setType(Material.OBSIDIAN);
                 }
-                for (int y = 1; y <= 3; y++) {
-                    Block airBlock = platformBlock.getRelative(BlockFace.UP, y);
-                    if (airBlock.getType() != Material.AIR) {
-                        airBlock.setType(Material.AIR);
+                for (int yMod = 1; yMod <= 3; yMod++) {
+                    Block b = platformBlock.getRelative(BlockFace.UP, yMod);
+                    if (b.getType() != Material.AIR) {
+                        b.breakNaturally();
+                        b.setType(Material.AIR);
                     }
                 }
             }
         }
-
-    } else if (fromWorld.equals(BorderWorldCreator.endWorldName)) {
-        // Returning from End
-        event.setTo(Bukkit.getWorld(BorderWorldCreator.worldName).getSpawnLocation());
     }
-}
+
+    private void checkForFirstNetherEnter(Location location) {
+        if (!GameData.getBoolean("nether-initialized")) {
+            WorldBorder wb = Bukkit.getWorld(BorderWorldCreator.netherWorldName).getWorldBorder();
+            wb.setCenter(location.clone().add(0.5, 0, 0.5));
+            wb.setSize(ItemHandler.getCollectedItems().size() * 2 + 1);
+            GameData.set("nether-initialized", true);
+        }
+    }
 }
